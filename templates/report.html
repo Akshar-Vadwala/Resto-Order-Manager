@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .footer {
+            margin-top: auto;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-primary {
+            width: 100px; 
+            margin: 10px 0;
+            font-size: 0.8em; 
+            border-radius: 10px; 
+            padding: 8px 12px; 
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 50px;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+        .center {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/restaurent">FoodStack</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/restaurent">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/update_menu">Update Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/manage_orders">Manage Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/report">View Report</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% if msg %}
+<div class="alert alert-success" role="alert" id="notification">
+    {{ msg }}
+</div>
+{% endif %}
+
+<div class="container cart-section" style="max-width: 400px; margin: 0 auto;">
+    <div class="center">
+        <h1 style="margin-top: 20px;">View Report</h1>
+    </div>
+    <form method="post" action="{% url 'report' %}" class="border rounded p-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="date" class="center">Date</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+        </div>
+        <div class="text-center">
+            <button id="generate-button" class="btn btn-primary" type="submit">Generate</button>
+        </div>
+    </form>
+</div>
+
+{% if report_data %}
+<div class="container mt-4">
+    <div class="center">
+        <h2>Orders on {{ report_data.date }}</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in report_data.orders.all %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.user.username }}</td>
+                        <td>{{ order.description }}</td>
+                        <td>₹{{ order.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+     <div class="btn-group mt-3 mb-3 d-flex justify-content-center">
+         <a href="/report_download/{{report_data.date}}" class="btn btn-success btn-transition">Download PDF</a>
+     </div>
+</div>
+{% endif %}
+
+<footer class="footer bg-primary text-white text-center py-3">
+    <div class="container">
+        <span>&copy; 2024 FoodStack.</span>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var message = "{{ msg }}";
+        if (message.trim().length > 0) {
+            $('#notification').show();
+            setTimeout(function() {
+                $('#notification').fadeOut();
+            }, 2000);
+        }
+    });
+</script>
+
+</body>
+</html>

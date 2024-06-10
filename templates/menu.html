@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <title>Order Menu</title>
+
+       <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+            }
+            .menu-section {
+                padding: 50px 0;
+                background-color: #f8f9fa;
+            }
+            .menu-title {
+                margin-bottom: 30px;
+                text-align: center;
+                color: #007bff;
+            }
+            .menu-item {
+                border-bottom: 1px solid #ddd;
+                padding: 15px 0;
+                display: flex;
+                align-items: center;
+                column-gap: 15px; 
+            }
+            .menu-item:last-child {
+                border-bottom: none;
+            }
+            .menu-item img {
+                max-width: 100px;
+                margin-right: 15px;
+            }
+            .menu-item h5 {
+                margin: 0;
+                color: #343a40;
+            }
+            .menu-item p {
+                margin: 5px 0;
+                color: #6c757d;
+            }
+            .menu-item .price {
+                font-weight: bold;
+                color: #343a40;
+            }
+            .btn-transition {
+                transition: background-color 0.3s, transform 0.3s;
+            }
+            .btn-transition:hover {
+                background-color: grey;
+                transform: scale(1.05);
+            }
+            footer {
+                margin-top: 50px;
+            }
+            .alert {
+                display: none;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+            .menu-item img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 10px; 
+                margin-right: 15px;
+            }
+        </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">FoodStack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/#about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/cart">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                    </a>
+                </li>
+                <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <a href="#" class="nav-link btn-transition" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+                                {% csrf_token %}
+                            </form>
+                        {% else %}
+                            <a class="nav-link btn-transition" href="{% url 'login' %}">Login</a>
+                        {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container menu-section">
+        <div class="menu-title">
+            <h2>Our Menu</h2>
+        </div>
+        <div class="alert alert-success" role="alert" id="cart-alert">
+            Item added to cart!
+        </div>
+        <div class="row">
+            {% for item in menu_items %}
+            <div class="col-md-6 menu-item">
+                <img src="{{ item.image_url }}" alt="{{ item.item }}">
+                <div>
+                    <h5>{{ item.item }}</h5>
+                    <p>{{ item.description }}</p>
+                    <p class="price">Price: ₹{{ item.price }}</p>
+                    <a class="btn btn-primary btn-transition add-to-cart" href="/add-to-cart/{{ item.id }}" role="button">Add</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="footer bg-primary text-white text-center py-3 mt-5">
+        <div class="container">
+            <span>&copy; 2024 FoodStack.</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').on('click', function(event) {
+                event.preventDefault();
+                var itemId = $(this).attr('href').split('/').pop();
+
+                // You can use AJAX to add the item to the cart
+                $.ajax({
+                    url: '/add-to-cart/' + itemId,
+                    method: 'GET',
+                    success: function(response) {
+                        $('#cart-alert').fadeIn();
+                        setTimeout(function() {
+                            $('#cart-alert').fadeOut();
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

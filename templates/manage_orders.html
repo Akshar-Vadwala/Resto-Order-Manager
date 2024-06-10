@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .footer {
+            margin-top: auto;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-primary, .btn-danger, .btn-success {
+            margin: 5px;
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 50px;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+        .alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+    
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/restaurent">FoodStack</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/restaurent">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/update_menu">Update Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/manage_orders">Manage Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/report">View Report</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Orders</h2>
+    {% if msg %}
+    <div class="alert alert-success" role="alert" id="order-alert">
+        {{ msg }}
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.user.username }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.time }}</td>
+                    <td>{{ order.description }}</td>
+                    <td>₹{{ order.amount }}</td>
+                    <td>
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <button type="submit" name="cancel_order" class="btn btn-sm btn-danger" >Cancel</button>
+                        </form>
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <button type="submit" name="ready_order" class="btn btn-sm btn-success" >Ready for Delivery</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<footer class="footer bg-primary text-white text-center py-3">
+    <div class="container">
+        <span>&copy; 2024 FoodStack.</span>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var alertBox = $('#order-alert');
+        if (alertBox.text().trim().length > 0) {
+            alertBox.show();
+            setTimeout(function() {
+                alertBox.fadeOut();
+            }, 2000);
+        }
+    });
+</script>
+
+</body>
+</html>

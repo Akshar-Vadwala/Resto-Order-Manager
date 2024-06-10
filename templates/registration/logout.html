@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <title>Logged Out</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .logout-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .logout-message {
+            margin-bottom: 20px;
+        }
+        .btn-transition {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-transition:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+        footer {
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">FoodStack</a>
+    </nav>
+    <div class="container logout-section">
+        <div>
+            <div class="alert alert-info logout-message" role="alert">
+                You have been successfully logged out.
+            </div>
+            <a href="/" class="btn btn-primary btn-transition">Return to Home</a>
+        </div>
+    </div>
+    <footer class="footer bg-primary text-white text-center py-3 mt-5">
+        <div class="container">
+            <span>&copy; 2024 FoodStack.</span>
+        </div>
+    </footer>
+</body>
+</html>

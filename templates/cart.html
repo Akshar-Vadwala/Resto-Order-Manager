@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <title>Shopping Cart</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cart-title {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #007bff;
+        }
+        table th, table td {
+            text-align: center;
+        }
+        .btn-transition {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-transition:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+        footer {
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">FoodStack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/#about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/cart">Cart <i class="fas fa-shopping-cart"></i></a>
+                </li>
+                 <li class="nav-item">
+                         {% if user.is_authenticated %}
+                             <a href="#" class="nav-link btn-transition" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+                                 {% csrf_token %}
+                             </form>
+                         {% else %}
+                             <a class="nav-link btn-transition" href="{% url 'login' %}">Login</a>
+                         {% endif %}
+                 </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container cart-section">
+        <div class="cart-title">
+            <h2>Your Cart</h2>
+        </div>
+        <div class="row">
+            {% if cart_items %}
+                <div class="col-md-8 offset-md-2">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart_item in cart_items %}
+                            <tr>
+                                <td>{{ cart_item.menu_item.item }}</td>
+                                <td>{{ cart_item.menu_item.description }}</td>
+                                <td>₹{{ cart_item.menu_item.price }}</td>
+                                <td>{{ cart_item.quantity }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-danger" href="{% url 'remove_from_cart' cart_item.id %}">Remove</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="text-right">
+                        <h4>Total: ₹{{ subtotal }}</h4>
+                    
+                        <div class="btn-group mt-3">
+                            <form method="post" action="{% url 'menu' %}" style="margin-right: 10px;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-info btn-transition">Add more items</button>
+                            </form>
+                    
+                            <form method="post" action="{% url 'payment' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-transition">Continue</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            {% else %}
+                <div class="col-md-12 text-center">
+                    <p>No items in your cart.</p>
+                    <a href="{% url 'menu' %}" class="btn btn-primary btn-transition">Browse Menu</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer bg-primary text-white text-center py-3 mt-5">
+        <div class="container">
+            <span>&copy; 2024 FoodStack.</span>
+        </div>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <title>Restaurant Management System</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .hero-image {
+            background-image: url('https://images.unsplash.com/photo-1586197079093-d41601d38245?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 2s;
+        }
+        .hero-text {
+            background: #000; /* Solid black background */
+            padding: 20px;
+            border-radius: 10px;
+            animation: slideIn 1s;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes slideIn {
+            from {transform: translateY(-20px);}
+            to {transform: translateY(0);}
+        }
+        .features .icon {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .features .col-md-4 {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #007bff;
+        }
+        footer {
+            margin-top: 50px;
+        }
+        .btn-transition {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-transition:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+        
+        .contact-info h4 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">FoodStack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="#about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/menu">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-transition" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1 class="display-4" style="color:#fff">Welcome to FoodStack</h1>
+            <p class="lead">Streamline your restaurant operations for success.</p>
+            <a class="btn btn-primary btn-lg btn-transition" href="/menu" role="button">Give Orders</a>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row features">
+            <div class="col-md-4 text-center">
+                <div class="icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Comprehensive Menu Management</h3>
+                <p>Easily manage and update your restaurant's menu to reflect seasonal specials and new dishes.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3>Efficient Order Processing</h3>
+                <p>Streamline the order process from table to kitchen, reducing wait times and improving service quality.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Real-time Analytics</h3>
+                <p>Gain insights into your business with real-time sales data, helping you make informed decisions.</p>
+            </div>
+        </div>
+
+        <div id="about" class="section-title">
+            <h2>About Us</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>FoodStack is dedicated to helping restaurants streamline their operations and enhance the customer experience. Our comprehensive management system is designed to simplify tasks such as order processing, menu updates, and inventory management, allowing you to focus on what you do best: providing excellent food and service. With real-time analytics and a user-friendly interface, FoodStack is the ultimate tool for modern restaurants.</p>
+            </div>
+        </div>
+
+        <div id="contact" class="section-title">
+            <h2>Contact Us</h2>
+        </div>
+        <div class="row contact-info">
+            <div class="col-md-6 text-left">
+                <h4>Address</h4>
+                <p>1234 Food St, Culinary City, Gourmet State, 56789</p>
+            </div>
+            <div class="col-md-6 text-right">
+                <h4>Email & Phone</h4>
+                <p>Email: support@foodstack.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer bg-primary text-white text-center py-3 mt-5">
+        <div class="container">
+            <span>&copy; 2024 FoodStack.</span>
+        </div>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
